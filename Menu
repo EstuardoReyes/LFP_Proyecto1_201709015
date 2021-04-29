@@ -1,0 +1,14 @@
+digraph unix {
+	node [color=lightblue2 style=filled]
+	"Restaurante LFP" -> Menu
+	Menu -> Bebidas
+	Bebidas -> "Bebida #1 Q.11.00\nDescripcion Bebida 1"
+	Bebidas -> "Bebida #2 Q.10.50\nDescripcion Bebida 2"
+	Menu -> Desayunos
+	Desayunos -> "Desayuno 1 Q.45.00\nDescripcion Desayuno 1"
+	Desayunos -> "Desayuno 2 Q.40.00\nDescripcion Desayuno 2"
+	Desayunos -> "Desayuno 3 Q.35.00\nDescripcion Desayuno 3"
+	Desayunos -> "Desayuno 4 Q.5.00\nDescripcion Desayuno 4"
+	Menu -> Postres
+	Postres -> "Postre 1 Q.25.00\nDescripcion Postre 1"
+}

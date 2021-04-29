@@ -1,11 +1,11 @@
 @charset "UTF-8";
                     /* Body */
                     html {
-                            font-size: 30px;
+                            font-size: 20px;
                         }
                         body {
                             font-family: source-sans-pro;
-                            background-color: #f2f2f2;
+                            background-color: #b8b8b8;
                             margin-top: 0px;
                             margin-right: 0px;
                             margin-bottom: 0px;
@@ -14,7 +14,7 @@
                             font-weight: 200;
                             }
                             .container {
-                            width: 70%;
+                            width: 55%;
                             margin-left: auto;
                             margin-right: auto;
                             height: 700px;
@@ -23,7 +23,7 @@
                             width: 100%;
                             height: 8%;
                             background-color: #52bad5;
-                            border-bottom: 1px solid #2C9AB7;
+                            border-bottom: 1px solid #2c9ab7;
                             }
                             .logo {
                         color: #fff;
@@ -63,39 +63,36 @@
                             }
 
                             .banner {
-                                background-color: #2D9AB7;
+                                background-color: #FFFFFF;
                                 background-image: url(../images/parallax.png);
-                                +height:96px;
+                                height:890px;
                                 background-attachment: fixed;
                                 background-size: cover;
                                 background-repeat: no-repeat;
                             }
-                            .parallaxx {
-                                color: #FFFFFF;
-                                text-align: left;
-                                padding-left: 200px;
-                                padding-right: 100px;
+                        
+                            .titulo {
+                                color: #2c9ab7;
+                                text-align:center;
+                            
                                 padding-top: 50px;
                                 letter-spacing: 2px;
                                 margin-top: 0px;
                                 margin-bottom: 0px
                             }
-                            .parallax {
-                                color: #FFFFFF;
-                                text-align: left;
-                                padding-left: 200px;
-                                padding-right: 100px;
+
+                            .titulo1{
+                                color: #2c9ab7;
+                                text-align: center;   
                                 padding-top: 10px;
                                 letter-spacing: 2px;
                                 margin-top: 0px;
                                 margin-bottom: 0px
                             }
-
-                            .paralla {
-                                color: #ffffff5e;
+                            .titulo2{
+                                color: #2c9ab7;
                                 text-align: left;
-                                padding-left: 200px;
-                                padding-right: 100px;
+                                padding-left: 30px;   
                                 padding-top: 10px;
                                 letter-spacing: 2px;
                                 margin-top: 0px;

@@ -5,6 +5,7 @@ errores = []
 lexemas = []
 factura = []
 matrizArticulos = []
+erroresFactura = []
 
 def agregarCategoria(categoria): # si no existe agrega una nueva si si no hace nada
     cate = False
@@ -32,10 +33,14 @@ def automata(nombreArchivo):
     global categoriaActual
     global errores
     global lexemas
-    errores.clear()
-    lexemas.clear()
-    factura.clear()
-    matrizArticulos.clear()
+    global factura
+    global matrizArticulos
+    nombreCliente = ''
+    nitCliente = ''
+    direccionCliente = ''
+    descuento = ''
+    orden = 0
+    numero = ''
     errorActivo = False
     archivo = open(nombreArchivo,"r")
     fila=1
@@ -44,8 +49,8 @@ def automata(nombreArchivo):
     nombre = ''
     precio = 00
     descripcion = ''
+    state = 0
     while (True):
-        state = 0
         linea = archivo.readline()
         x=0
         decimal = 2
@@ -75,10 +80,12 @@ def automata(nombreArchivo):
                 elif ord(actual) == 32:
                     x=x+1
                 elif ord(actual) == 39 and fila != 1:
+                    
                     state = 3
                     x = x+1
-                elif ord(actual) == 39 and fila == 1:
+                elif ord(actual) == 39 and fila == 1: # idedntifica que el archivo que viene es una factura
                     state = 15
+                    
                     x = x+1
                 elif actual == '\n':
                     x = x+1
@@ -345,18 +352,141 @@ def automata(nombreArchivo):
                     auxiliar = auxiliar + actual
                     x=x+1
     #########################################################################3
-            elif state  == 15:
+            elif state == 15:   # analiza hasta encontrar otro comilla simple
+              
                 if ord(actual)==32 or ord(actual)>=65 and ord(actual)<=90 or ord(actual)>=97 and ord(actual)<=122 or ord(actual)==164 or ord(actual)==165:
                     auxiliar = auxiliar + actual
                     x = x+1
                 elif ord(actual) == 39:
-                    factura.append(auxiliar)
+                   
+                    nombreCliente = auxiliar
                     state = 16
+                    auxiliar = ''
+                    x = x+1
+                else:
+                    a = dict(Fila=fila,Columna=x+1,Caracter=actual,Descripcion='Error en nombre de cliente')
+                    errores.append(a)
+                    x = x+1
     ################################################################################
-            elif state == 16:
+            elif state == 16: # analiza hasta encontrar una comilla simple
+                
+                if ord(actual) == 39:
+                    
+                    state = 17
+                    x = x + 1
+                elif ord(actual) == 44 or ord(actual) == 32:
+                    x = x + 1
+                else:
+                    a = dict(Fila=fila,Columna=x+1,Caracter=actual,Descripcion='Caracter Desconocido')
+                    errores.append(a)
+                    x = x+1  
+    ###############################################################################
+            elif state == 17:
+                
                 if ord(actual) >= 48 and ord(actual) <= 57 or ord(actual)== 45:
                     auxiliar = auxiliar + actual
-
+                    x = x + 1
+                elif ord(actual) == 32:
+                    x = x + 1
+                elif ord(actual) == 39:
+                    state = 18
+                    nitCliente = auxiliar
+                    auxiliar = ''
+                    x = x + 1
+    #######################################################################################3
+            elif state == 18:
+                if ord(actual) == 32:
+                    x = x + 1
+                elif ord(actual) == 39:
+                    state = 19
+                    x = x + 1
+                elif ord(actual) == 44:
+                    x = x + 1
+                else:
+                    a = dict(Fila=fila,Columna=x+1,Caracter=actual,Descripcion='Caracter Desconocido')
+                    errores.append(a)
+                    x = x+1  
+    ##############################################################################################
+            elif state == 19: # anliza ciuddad
+                if ord(actual)==32 or ord(actual)>=65 and ord(actual)<=90 or ord(actual)>=97 and ord(actual)<=122 or ord(actual)==164 or ord(actual)==165:
+                    auxiliar = auxiliar + actual
+                    x = x + 1
+                elif ord(actual) == 39:
+                    direccionCliente = auxiliar
+                    auxiliar = ''
+                    state = 20
+                    x = x + 1
+                else:
+                    a = dict(Fila=fila,Columna=x+1,Caracter=actual,Descripcion='Caracter Desconocido')
+                    errores.append(a)
+                    x = x+1 
+    #######################################################################################3
+            elif state == 20: 
+                  #analiza hasta encontrar un numer
+                if ord(actual) == 32:
+                    x = x + 1
+                elif ord(actual) == 44:
+                    state = 21
+                    x = x + 1
+                else:
+                    a = dict(Fila=fila,Columna=x+1,Caracter=actual,Descripcion='Caracter Desconocido')
+                    errores.append(a)
+                    x = x + 1
+    #######################################################################################3
+            elif state == 21:
+                if ord(actual) == 32:
+                    x = x + 1
+                elif ord(actual) >= 48 and ord(actual) <= 57 or ord(actual)== 46:
+                    auxiliar = auxiliar + actual
+                    x = x + 1
+                elif ord(actual) == 37:
+                    x = x+1
+                    b = dict(nombre=nombreCliente,nit=nitCliente,direccion=direccionCliente,descuento=auxiliar)
+                    factura.append(b)
+                    auxiliar = ''
+                elif actual == '\n':     
+                    state = 22
+                    x = x + 1           
+                else:
+                    a = dict(Fila=fila,Columna=x+1,Caracter=actual,Descripcion='Caracter Desconocido')
+                    errores.append(a)
+                    x = x+1   
+    ########################################################################################## 
+            elif state == 22: # agregar numero de orden y pedidos
+                if ord(actual) == 32:
+                    x = x +1
+                elif ord(actual) >= 48 and ord(actual) <= 57:
+                    auxiliar = auxiliar + actual
+                    x = x + 1
+                elif ord(actual) == 44:
+                    numero = auxiliar
+                    auxiliar = ''
+                    state = 23
+                    x = x + 1
+                else :
+                    a = dict(Fila=fila,Columna=x+1,Caracter=actual,Descripcion='Caracter Desconocido')
+                    errores.append(a)
+                    x = x+1 
+    ######################################################################################################
+            elif state  == 23:   # agrega el codigo 
+                if ord(actual) == 32:
+                    x = x + 1
+                elif ord(actual)==95 or ord(actual)>=65 and ord(actual)<=90 or ord(actual)>=97 and ord(actual)<=122 or ord(actual)==164 or ord(actual)==165:
+                    auxiliar = auxiliar + actual  
+                    x=x+1
+                elif  ord(actual) >= 48 and ord(actual) <= 57:
+                    auxiliar = auxiliar + actual
+                    x=x+1
+                elif actual == '\n':
+                    c = dict(numero=numero,id=auxiliar)
+                    factura.append(c)
+                    auxiliar= ''
+                    state = 22
+                    x = x + 1
+                else:
+                    a = dict(Fila=fila,Columna=x+1,Caracter=actual,Descripcion='Caracter Desconocido')
+                    errores.append(a)
+                    x = x+1
         if not linea:
             break
         fila=fila+1

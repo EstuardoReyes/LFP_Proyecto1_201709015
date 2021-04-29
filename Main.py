@@ -23,16 +23,13 @@ def cls():
         r=r+1 
 
 def cargaMenu():
-    global archivoMenu
     global archivo_Menu_Seleccionado
     global name
     root = Tk()
     root.withdraw()
-    matrizArticulos.clear()
-    errores.clear()
-    lexemas.clear()
+    gramaticas.clear()
     root.wm_attributes("-topmost", 1)
-    archivoMenu = askopenfilename(initialdir="D:\Galeria\Escritorio",filetypes =(("Archivo LFP", "*.lfp"),("Todos Los Archivos","*.*")),title = "Busque su archivo.")
+    archivoMenu = askopenfilename(filetypes =(("Archivo GLC", "*.glc"),("Todos Los Archivos","*.*")),title = "Busque su archivo.")
     root.update()
     root.destroy()
     print("Archivo Menu seleccionada correctamente")
